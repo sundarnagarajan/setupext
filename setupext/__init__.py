@@ -44,13 +44,14 @@ known_steps = [
     'build_ext',
     'build_py',
     'build_scripts',
-    'install',
     'install_data',
-    'install_headers',
     'install_lib',
-    'install_scripts',
+    'install_headers',
+    # Following do not work
+    # 'install',
+    # 'install_scripts',
 ]
-trace_triggers = False
+trace_triggers = True
 
 # setup config, so that user only needs to add cmdlist and optionally
 # set show_output, show_err, ignore_err for different triggers
@@ -280,7 +281,7 @@ class CustomBuildScripts(build_scripts):
 
 class CustomInstall(install):
     def run(self):
-        run_triggers('install', 'pre', args=(self,))
+        # run_triggers('install', 'pre', args=(self,))
         install.run(self)
         run_triggers('install', 'post', args=(self,))
 
