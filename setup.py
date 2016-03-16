@@ -12,7 +12,7 @@ PACKAGE DATA
 '''
 # You _SHOULD_ set these
 toplevel = 'setupext'
-version = '0.21'
+version = '0.22'
 description = toplevel
 install_requires = [
 ]
