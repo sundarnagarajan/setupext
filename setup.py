@@ -24,8 +24,8 @@ license = (
 
 # The following are optional
 long_description = open('README.txt').read()
-url = ''
-download_url = ''
+url = 'https://github.com/sundarnagarajan/setupext'
+download_url = 'https://github.com/sundarnagarajan/setupext.git'
 author = 'Sundar Nagarajan'
 author_email = 'sun.nagarajan@gmail.com'
 maintainer = author

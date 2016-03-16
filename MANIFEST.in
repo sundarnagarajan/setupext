@@ -1,3 +1,1 @@
-include README.txt
-include LICENSE
-include setupext/doc *
+recursive-include setupext/doc *
