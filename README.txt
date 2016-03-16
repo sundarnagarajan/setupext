@@ -1,3 +1,34 @@
+This module contains utility methods for easing writing python
+installation scripts (setup.py):
+
+Building C extensions: See setupext/doc/setup-sample.py
+    - Specify location of C sources
+    - Specify shared library name
+    - Specify specific C source files to be compiled
+
+Bundle additional files with package - using get_dir_tree()
+    - Include and INSTALL C sources under python module directory
+    - Include README, LICENSE ando ther files under python module directory
+
+Add a LIST of shell commands or python callables to execute at different
+stages of installation:
+    build
+    build_clib
+    build_ext
+    build_py
+    build_scripts
+    install_data
+    install_lib
+    install_headers
+By setting values in setupext.config, a LIST of shell commands and/or 
+python code (callables) can be run before or after each ofthese stages
+
+Note that you need to include this package within your package if you want
+to use the trigger functionality.
+
+To only use get_dir_tree(), just copy that function into your setup.py
+
+
 ==============================================================================
 ASSUMPTIONS AND PACKAGE LAYOUT
 ==============================================================================
@@ -167,8 +198,8 @@ EXAMPLE:
 -------
 Assume you want to do the following:
     - Run shell_command_1 and callable_1 BEFORE
-        installation begins
-    - Ignore and hide errors running command at install.pre step
+        installation build (step: build) begins
+    - Ignore and hide errors running command at build.pre step
         but show outputs
     - Run shell_command_2 after build_ext step is completed
 Steps:
@@ -180,7 +211,7 @@ setupext.trace_triggers = False
 
 # Set shell_command_1, shell_command_2
 # shell_command_1 Will return a non-zero return code
-shell_command_1 = 'echo "Starting installation"; uname --nosuchoption'
+shell_command_1 = 'echo "Starting build"; uname --nosuchoption'
 shell_command_2 = 'echo "build_ext completed"'
 
 # define a callable
@@ -191,9 +222,9 @@ def mycallable(*args, **kwargs):
     ))
 
 # Now setup setupext.config
-setupext.config['install']['pre']['cmdlist'] = [shell_command_1, mycallable]
-setupext.config['install']['post']['ignore_err'] = True
-setupext.config['install']['post']['show_err'] = False
+setupext.config['build']['pre']['cmdlist'] = [shell_command_1, mycallable]
+setupext.config['build']['post']['ignore_err'] = True
+setupext.config['build']['post']['show_err'] = False
 # shell_command_1 will produce stderr output and return non-zero code
 # but stderr will be suppressed and mycallable will still be executed
 
