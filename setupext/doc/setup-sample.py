@@ -23,6 +23,7 @@
 import sys
 import os
 from setuptools import setup, find_packages, Extension
+# import setupext ONLY if you need triggers for installation steps
 import setupext
 
 
@@ -42,9 +43,9 @@ PACKAGE DATA
 ==============================================================================
 '''
 # You _SHOULD_ set these
-toplevel = 'dummy_package'
+name = 'dummy_package'
 version = '0.1'
-description = toplevel
+description = name
 install_requires = [
     'cffi>=1.0.0',
     'six>=1.9.0'
@@ -74,7 +75,7 @@ zip_safe = True
 ==============================================================================
 C EXTENSION DETAILS
 
-Put the C files in a dir under toplevel so that the C files can also be
+Put the C files in a dir under name so that the C files can also be
 installed using data_dirs (see ADDITIONAL DATA FILES)
 ==============================================================================
 '''
@@ -83,8 +84,8 @@ libname = 'libdummy'
 c_src_files = [
     'dummy.c',
 ]
-libpath = os.path.join(toplevel, libname)
-c_src_list = [os.path.join(toplevel, c_dir, x) for x in c_src_files]
+libpath = os.path.join(name, libname)
+c_src_list = [os.path.join(name, c_dir, x) for x in c_src_files]
 ext_modules = [
     Extension(
         name=libpath,
@@ -99,7 +100,7 @@ ext_modules = [
 ADDITIONAL DATA FILES
 ---------------------
 
-- set data_dirs to LIST of directories under toplevel that
+- set data_dirs to LIST of directories under name that
     you want to include
 
 see README.txt for more details
@@ -123,10 +124,12 @@ see README.txt for more details
 
 '''
 ==============================================================================
-ADDITIONAL keyword args to setup()
+ADDITIONAL keyword args to setup() - shouldn't be required, normally
 ==============================================================================
 '''
 ADDL_KWARGS = dict(
+    # To support custom step triggers
+    cmdclass=setupext.get_cmdclass()
 )
 
 
@@ -136,44 +139,59 @@ ADDL_KWARGS = dict(
 ==============================================================================
 '''
 
-# Required keywords
-kwdict = dict(
-    name=toplevel,
-    version=version,
-    install_requires=install_requires,
-    packages=packages,
-    description=description,
-    license=license,
-)
 
-# Optional keywords
-kwdict.update(dict(
-    long_description=globals().get('long_description', ''),
-    url=globals().get('url', ''),
-    download_url=globals().get('download_url', ''),
-    author=globals().get('author', ''),
-    author_email=globals().get('author_email', ''),
-    maintainer=globals().get('maintainer', ''),
-    maintainer_email=globals().get('maintainer_email', ''),
-    classifiers=globals().get('classifiers', []),
-    keywords=globals().get('keywords', []),
-    zip_safe=globals().get('zip_safe', False),
-))
-kwdict.update(globals().get('ADDL_KWARGS', {}))
+def get_dirtree(topdir, dirlist=[]):
+    '''
+    topdir-->str: must be name of a dir under current working dir
+    dirlist-->list of str: must all be names of dirs under topdir
+    '''
+    ret = []
+    curdir = os.getcwd()
+    if not os.path.isdir(topdir):
+        return ret
+    os.chdir(topdir)
+    try:
+        for dirname in dirlist:
+            if not os.path.isdir(dirname):
+                continue
+            for (d, ds, fs) in os.walk(dirname):
+                for f in fs:
+                    ret += [os.path.join(d, f)]
+        return ret
+    except:
+        return ret
+    finally:
+        os.chdir(curdir)
 
-# To support custom step triggers
-kwdict['cmdclass'] = setupext.get_cmdclass()
+# Make some keywords MANDATORY
+for k in [
+    'name', 'version', 'description', 'license',
+]:
+    if k not in locals():
+        raise Exception('Missing mandatory keyword: ' + k)
 
-# More optional keywords, but which are added conditionally
-ext_modules = globals().get('ext_modules', [])
-if ext_modules:
-    kwdict['ext_modules'] = ext_modules
-
-dirlist = globals().get('data_dirs', None)
+# keywords that are computed from variables
+dirlist = locals().get('data_dirs', None)
 if isinstance(dirlist, list):
-    kwdict['package_dir'] = {toplevel: toplevel}
-    kwdict['package_data'] = {toplevel:
-                              setupext.get_dirtree(toplevel, dirlist)}
+    package_dir = {name: name}
+    package_data = {name: get_dirtree(topdir=name, dirlist=dirlist)}
+
+known_keywords = [
+    'name', 'version', 'packages', 'description', 'license',
+    'install_requires', 'requires', 'setup_requires',
+    'ext_modules', 'package_dir', 'package_data',
+    'zip_safe', 'classifiers', 'keywords',
+    'long_description', 'url', 'download_url',
+    'author', 'author_email', 'maintainer', 'maintainer_email',
+]
+
+kwdict = {}
+for k in known_keywords:
+    if k in locals():
+        kwdict[k] = locals()[k]
+
+# Additional keywords specified by user - shouldn't be required, normally
+kwdict.update(ADDL_KWARGS)
 
 
 setup(**kwdict)

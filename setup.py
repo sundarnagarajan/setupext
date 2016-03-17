@@ -11,9 +11,9 @@ PACKAGE DATA
 ==============================================================================
 '''
 # You _SHOULD_ set these
-toplevel = 'setupext'
-version = '0.24.1'
-description = toplevel
+name = 'setupext'
+version = '0.24.2'
+description = name
 install_requires = [
 ]
 packages = find_packages()
@@ -75,34 +75,59 @@ ADDL_KWARGS = dict(
 ==============================================================================
 '''
 
-# Required keywords
-kwdict = dict(
-    name=toplevel,
-    version=version,
-    install_requires=install_requires,
-    packages=packages,
-    description=description,
-    license=license,
-)
 
-# Optional keywords
-kwdict.update(dict(
-    long_description=globals().get('long_description', ''),
-    url=globals().get('url', ''),
-    download_url=globals().get('download_url', ''),
-    author=globals().get('author', ''),
-    author_email=globals().get('author_email', ''),
-    maintainer=globals().get('maintainer', ''),
-    maintainer_email=globals().get('maintainer_email', ''),
-    classifiers=globals().get('classifiers', []),
-    keywords=globals().get('keywords', []),
-    zip_safe=globals().get('zip_safe', False),
-))
-kwdict.update(globals().get('ADDL_KWARGS', {}))
+def get_dirtree(topdir, dirlist=[]):
+    '''
+    topdir-->str: must be name of a dir under current working dir
+    dirlist-->list of str: must all be names of dirs under topdir
+    '''
+    ret = []
+    curdir = os.getcwd()
+    if not os.path.isdir(topdir):
+        return ret
+    os.chdir(topdir)
+    try:
+        for dirname in dirlist:
+            if not os.path.isdir(dirname):
+                continue
+            for (d, ds, fs) in os.walk(dirname):
+                for f in fs:
+                    ret += [os.path.join(d, f)]
+        return ret
+    except:
+        return ret
+    finally:
+        os.chdir(curdir)
 
-# More optional keywords, but which are added conditionally
-ext_modules = globals().get('ext_modules', [])
-if ext_modules:
-    kwdict['ext_modules'] = ext_modules
+# Make some keywords MANDATORY
+for k in [
+    'name', 'version', 'description', 'license',
+]:
+    if k not in locals():
+        raise Exception('Missing mandatory keyword: ' + k)
+
+# keywords that are computed from variables
+dirlist = locals().get('data_dirs', None)
+if isinstance(dirlist, list):
+    package_dir = {name: name}
+    package_data = {name: get_dirtree(topdir=name, dirlist=dirlist)}
+
+known_keywords = [
+    'name', 'version', 'packages', 'description', 'license',
+    'install_requires', 'requires', 'setup_requires',
+    'ext_modules', 'package_dir', 'package_data',
+    'zip_safe', 'classifiers', 'keywords',
+    'long_description', 'url', 'download_url',
+    'author', 'author_email', 'maintainer', 'maintainer_email',
+]
+
+kwdict = {}
+for k in known_keywords:
+    if k in locals():
+        kwdict[k] = locals()[k]
+
+# Additional keywords specified by user - shouldn't be required, normally
+kwdict.update(ADDL_KWARGS)
+
 
 setup(**kwdict)
