@@ -23,7 +23,10 @@ license = (
 )
 
 # The following are optional
-long_description = open('README.txt').read()
+try:
+    long_description = open('README.rst').read()
+except:
+    long_description = description
 url = 'https://github.com/sundarnagarajan/setupext'
 download_url = 'https://github.com/sundarnagarajan/setupext.git'
 author = 'Sundar Nagarajan'

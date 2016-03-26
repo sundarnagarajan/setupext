@@ -1,37 +1,32 @@
-This module contains utility methods for easing writing python
-installation scripts (setup.py):
+# setupext
+This module contains utility methods for easing writing python installation scripts (setup.py):
 
 Building C extensions: See setupext/doc/setup-sample.py
-    - Specify location of C sources
-    - Specify shared library name
-    - Specify specific C source files to be compiled
+- Specify location of C sources
+- Specify shared library name
+- Specify specific C source files to be compiled
 
 Bundle additional files with package - using get_dir_tree()
-    - Include and INSTALL C sources under python module directory
-    - Include README, LICENSE ando ther files under python module directory
+- Include and INSTALL C sources under python module directory
+- Include README, LICENSE ando ther files under python module directory
 
-Add a LIST of shell commands or python callables to execute at different
-stages of installation:
-    build
-    build_clib
-    build_ext
-    build_py
-    build_scripts
-    install_data
-    install_lib
-    install_headers
-By setting values in setupext.config, a LIST of shell commands and/or 
-python code (callables) can be run before or after each ofthese stages
+Add a LIST of shell commands or python callables to execute at different stages of installation:
+- build
+- build_clib
+- build_ext
+- build_py
+- build_scripts
+- install_data
+- install_lib
+- install_headers
 
-Note that you need to include this package within your package if you want
+By setting values in setupext.config, a LIST of shell commands and/or python code (callables) can be run before or after each ofthese stages.  Note that you need to include this package within your package if you want
 to use the trigger functionality.
 
 To only use get_dir_tree(), just copy that function into your setup.py
 
 
-==============================================================================
-ASSUMPTIONS AND PACKAGE LAYOUT
-==============================================================================
+# ASSUMPTIONS AND PACKAGE LAYOUT
 toplevel --> python package name
 
 This setup.py assumes following layout.
@@ -83,22 +78,16 @@ If your layout is different, you may need to make changes to the following:
         - Setting ext_modules
 
 
-==============================================================================
-C EXTENSION DETAILS
-Put the C files in a dir under toplevel so that the C files can also be
-installed using data_dirs (see ADDITIONAL DATA FILES)
+# C EXTENSION DETAILS
+Put the C files in a dir under toplevel so that the C files can also be installed using data_dirs (see ADDITIONAL DATA FILES)
 
 For simple cases with a single extension, you should only need to set:
     c_dir-->str: directory
     libname-->str: shared library filename without '.so'
     c_src_files-->list of str: C source filenames within c_dir
-==============================================================================
 
-==============================================================================
-ADDITIONAL DATA FILES
----------------------
-I use package_dir and package_data to specify installing additional
-files that are:
+# ADDITIONAL DATA FILES
+I use package_dir and package_data to specify installing additional files that are:
     - Files in directories under toplevel
     - Wouldn't be AUTOMATICALLY included or installed because of:
         - py_modules directive
@@ -135,11 +124,8 @@ Preparatory steps:
 
 
 
-==============================================================================
-CUSTOM STEPS
-==============================================================================
-To add a LIST of shell commands or python callables to execute at different
-steps during installation, modify setupext.config as follows:
+# CUSTOM STEPS
+To add a LIST of shell commands or python callables to execute at different steps during installation, modify setupext.config as follows:
 
     - setupext.config is a DICT with keys representing installation steps
     - The steps supported are in setupext.known_steps (list of str)
@@ -194,16 +180,16 @@ steps during installation, modify setupext.config as follows:
             - if byte-compiling is disabled, install_lib won't run
             - If package doesn't define a C extension, build_ext  won't run
 
-EXAMPLE:
--------
+# EXAMPLE:
 Assume you want to do the following:
     - Run shell_command_1 and callable_1 BEFORE
         installation build (step: build) begins
     - Ignore and hide errors running command at build.pre step
         but show outputs
     - Run shell_command_2 after build_ext step is completed
-Steps:
+## Steps:
 
+~~~~ {.sourceCode .python}
 # Set to True to get DEBUG on stderr when each step is called
 # Debug messages will appear even if you do not setup custom commands
 # to execute for the step
@@ -230,3 +216,4 @@ setupext.config['build']['post']['show_err'] = False
 
 setupext.config['build_ext']['post']['cmdlist'] = [shell_command_2]
 # stderr if any from shell_command_2 will be shown (on stderr)
+~~~~
