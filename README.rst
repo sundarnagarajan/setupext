@@ -73,23 +73,24 @@ ASSUMPTIONS AND PACKAGE LAYOUT
             ├── data_dir2_file1 - e.g. LICENSE
             └── data_dir2_file2 - e.g. README.rst
 
-| If your layout is different, you may need to make changes to the
+If your layout is different, you may need to make changes to the
 following:
-|  - Under PACKAGE DATA:
-|  - Set toplevel to module (dir) under which:
-|  - C Extension shared lib if any will be installed
-|  - Additional data if any (data\_dirs) will be installed
-|  - Setting packages
 
-::
+-  Under PACKAGE DATA:
+-  Set toplevel to module (dir) under which:
 
-    - Under ADDITIONAL keyword args to setup()
-        - Add py_modules=[] to ADDL_KWARGS
+   -  C Extension shared lib if any will be installed
+   -  Additional data if any (data\_dirs) will be installed
 
-    - Under C EXTENSION DETAILS - IFF your package includes a C extension:
-        - Setting libpath
-        - Setting c_src_list
-        - Setting ext_modules
+-  Setting packages
+
+-  Under ADDITIONAL keyword args to setup()
+-  Add py\_modules=[] to ADDL\_KWARGS
+
+-  Under C EXTENSION DETAILS - IFF your package includes a C extension:
+-  Setting libpath
+-  Setting c\_src\_list
+-  Setting ext\_modules
 
 C EXTENSION DETAILS
 ===================
@@ -97,51 +98,54 @@ C EXTENSION DETAILS
 Put the C files in a dir under toplevel so that the C files can also be
 installed using data\_dirs (see ADDITIONAL DATA FILES)
 
-| For simple cases with a single extension, you should only need to set:
-|  c\_dir-->str: directory
-|  libname-->str: shared library filename without '.so'
-|  c\_src\_files-->list of str: C source filenames within c\_dir
+For simple cases with a single extension, you should only need to set:
+
+::
+
+    c_dir-->str: directory
+    libname-->str: shared library filename without '.so'
+    c_src_files-->list of str: C source filenames within c_dir
 
 ADDITIONAL DATA FILES
 =====================
 
-| I use package\_dir and package\_data to specify installing additional
+I use package\_dir and package\_data to specify installing additional
 files that are:
-|  - Files in directories under toplevel
-|  - Wouldn't be AUTOMATICALLY included or installed because of:
-|  - py\_modules directive
-|  - packages=find\_packages() directive
-|  - C source required for an extension
-| Examples:
-|  - Ship and INSTALL C source under the module directory
-|  - Ship and INSTALL any other files - e.g:
-|  - Documentation
-|  - LICENSE
 
-| With this method, we get following features:
-|  - Do NOT require MANIFEST.in
-|  - Do NOT require include\_package\_data directive
-|  - No code required in setupext.CustomInstallData class
+-  Files in directories under toplevel
+-  Wouldn't be AUTOMATICALLY included or installed because of:
+    - py\_modules directive
+    - packages=find\_packages() directive
+    - C source required for an extension
+   Examples:
+-  Ship and INSTALL C source under the module directory
+-  Ship and INSTALL any other files - e.g:
+    - Documentation
+    - LICENSE
 
-| Preparatory steps:
-|  - If package includes a C-source extension:
-|  - Put C source in a dir under toplevel
-|  - Set c\_dir above to the name of the dir UNDER toplevel
+With this method, we get following features:
 
-::
+-  Do NOT require MANIFEST.in
+-  Do NOT require include\_package\_data directive
+-  No code required in setupext.CustomInstallData class
 
-    - Create other directories with data under toplevel
+Preparatory steps:
 
-    - If you want files in TOP-LEVEL (above toplevel) included,
-      HARD LINK those FILES to directories under toplevel - e.g.:
-          - LICENSE
-          - README.rst
-      Alternatively, hard-link these files FROM the directory under
-      toplevel to the top-level
-      so that these files can be visible at top level (e.g. in github)
+-  | If package includes a C-source extension:
+   |  - Put C source in a dir under toplevel
+   |  - Set c\_dir above to the name of the dir UNDER toplevel
 
-    - set data_dirs to LIST of directories under toplevel that
-        you want to include
+-  Create other directories with data under toplevel
+-  | If you want files in TOP-LEVEL (above toplevel) included, HARD LINK
+   those FILES to directories under toplevel - e.g.:
+   |  - LICENSE
+   |  - README.rst
+   |  Alternatively, hard-link these files FROM the directory under
+   |  toplevel to the top-level
+   |  so that these files can be visible at top level (e.g. in github)
+
+-  set data\_dirs to LIST of directories under toplevel that you want to
+   include
 
 CUSTOM STEPS
 ============
