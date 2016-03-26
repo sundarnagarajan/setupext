@@ -88,9 +88,10 @@ following:
 -  Add py\_modules=[] to ADDL\_KWARGS
 
 -  Under C EXTENSION DETAILS - IFF your package includes a C extension:
--  Setting libpath
--  Setting c\_src\_list
--  Setting ext\_modules
+
+   -  Setting libpath
+   -  Setting c\_src\_list
+   -  Setting ext\_modules
 
 C EXTENSION DETAILS
 ===================
@@ -114,14 +115,17 @@ files that are:
 
 -  Files in directories under toplevel
 -  Wouldn't be AUTOMATICALLY included or installed because of:
-    - py\_modules directive
-    - packages=find\_packages() directive
-    - C source required for an extension
-   Examples:
+
+   -  py\_modules directive
+   -  packages=find\_packages() directive
+   -  C source required for an extension
+      Examples:
+
 -  Ship and INSTALL C source under the module directory
 -  Ship and INSTALL any other files - e.g:
-    - Documentation
-    - LICENSE
+
+   -  Documentation
+   -  LICENSE
 
 With this method, we get following features:
 
@@ -136,13 +140,15 @@ Preparatory steps:
    |  - Set c\_dir above to the name of the dir UNDER toplevel
 
 -  Create other directories with data under toplevel
--  | If you want files in TOP-LEVEL (above toplevel) included, HARD LINK
+-  If you want files in TOP-LEVEL (above toplevel) included, HARD LINK
    those FILES to directories under toplevel - e.g.:
-   |  - LICENSE
-   |  - README.rst
-   |  Alternatively, hard-link these files FROM the directory under
-   |  toplevel to the top-level
-   |  so that these files can be visible at top level (e.g. in github)
+
+   -  LICENSE
+   -  README.rst
+
+-  Alternatively, hard-link these files FROM the directory under
+   toplevel to the top-level so that these files can be visible at top
+   level (e.g. in github)
 
 -  set data\_dirs to LIST of directories under toplevel that you want to
    include

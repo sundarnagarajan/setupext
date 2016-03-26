@@ -72,9 +72,9 @@ If your layout is different, you may need to make changes to the following:
 - Add py_modules=[] to ADDL_KWARGS
 
 - Under C EXTENSION DETAILS - IFF your package includes a C extension:
-- Setting libpath
-- Setting c_src_list
-- Setting ext_modules
+    - Setting libpath
+    - Setting c_src_list
+    - Setting ext_modules
 
 
 # C EXTENSION DETAILS
@@ -90,14 +90,14 @@ For simple cases with a single extension, you should only need to set:
 I use package_dir and package_data to specify installing additional files that are:
 - Files in directories under toplevel
 - Wouldn't be AUTOMATICALLY included or installed because of:
-        - py_modules directive
-        - packages=find_packages() directive
-        - C source required for an extension
+    - py_modules directive
+    - packages=find_packages() directive
+    - C source required for an extension
 Examples:
 - Ship and INSTALL C source under the module directory
 - Ship and INSTALL any other files - e.g:
-        - Documentation
-        - LICENSE
+    - Documentation
+    - LICENSE
 
 With this method, we get following features:
 - Do NOT require MANIFEST.in
@@ -111,11 +111,9 @@ Preparatory steps:
 
 - Create other directories with data under toplevel
 - If you want files in TOP-LEVEL (above toplevel) included, HARD LINK those FILES to directories under toplevel - e.g.:
-          - LICENSE
-          - README.rst
-      Alternatively, hard-link these files FROM the directory under
-      toplevel to the top-level
-      so that these files can be visible at top level (e.g. in github)
+    - LICENSE
+    - README.rst
+- Alternatively, hard-link these files FROM the directory under toplevel to the top-level so that these files can be visible at top level (e.g. in github)
 
 - set data_dirs to LIST of directories under toplevel that you want to include
 
