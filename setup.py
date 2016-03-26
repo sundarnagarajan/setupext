@@ -12,7 +12,7 @@ PACKAGE DATA
 '''
 # You _SHOULD_ set these
 name = 'setupext'
-version = '0.24.6'   # oldver: '0.24.5'
+version = '0.24.7'   # oldver: '0.24.6'
 description = name
 install_requires = [
 ]

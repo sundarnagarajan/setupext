@@ -1,5 +1,5 @@
 # setupext
-This module contains utility methods for easing writing python installation scripts (setup.py):
+This module contains utility methods for easing writing python installation scripts (setup.py).
 
 Building C extensions: See setupext/doc/setup-sample.py
 - Specify location of C sources
@@ -30,6 +30,7 @@ To only use get_dir_tree(), just copy that function into your setup.py
 This setup.py assumes following layout.
 toplevel --> python package name
 
+~~~~
 	This directory
 	├── setup.py - this file
 	├── setupext.py - required in this directory
@@ -59,6 +60,7 @@ toplevel --> python package name
 	    └── data_dir2 - e.g. doc
 	        ├── data_dir2_file1 - e.g. LICENSE
 	        └── data_dir2_file2 - e.g. README.rst
+~~~~
 
 
 If your layout is different, you may need to make changes to the following:

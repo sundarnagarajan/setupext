@@ -2,7 +2,7 @@ setupext
 ========
 
 This module contains utility methods for easing writing python
-installation scripts (setup.py):
+installation scripts (setup.py).
 
 Building C extensions: See setupext/doc/setup-sample.py
 
@@ -43,35 +43,35 @@ ASSUMPTIONS AND PACKAGE LAYOUT
 
 ::
 
-    This directory
-    ├── setup.py - this file
-    ├── setupext.py - required in this directory
-    ├── LICENSE - typical for github etc but not required
-    │       Hard-link to a file under data_dirX to keep at top level
-    │       and also install the same file
-    │
-    ├── README.rst - typical for github etc but not requiredt
-    │       Hard-link to a file under data_dirX to keep at top level
-    │       and also install the same file
-    │
-    └── toplevel - python package name
-        ├── toplevel.__init__.py
-        ├── toplevel.module1.py
-        ├── toplevel.module2py
+        This directory
+        ├── setup.py - this file
+        ├── setupext.py - required in this directory
+        ├── LICENSE - typical for github etc but not required
+        │       Hard-link to a file under data_dirX to keep at top level
+        │       and also install the same file
         │
-        ├── subpkg1
-        │   ├── subpkg1.module1.py
-        │   ├── subpkg1.__init__.py
-        │   └── subpkg1.module2.py
+        ├── README.rst - typical for github etc but not requiredt
+        │       Hard-link to a file under data_dirX to keep at top level
+        │       and also install the same file
         │
-        ├── data_dir1 - e.g. c_files
-        │   ├── data_dir1_file1
-        │   ├── data_dir1_file2
-        │   └── data_dir1_file3
-        │
-        └── data_dir2 - e.g. doc
-            ├── data_dir2_file1 - e.g. LICENSE
-            └── data_dir2_file2 - e.g. README.rst
+        └── toplevel - python package name
+            ├── toplevel.__init__.py
+            ├── toplevel.module1.py
+            ├── toplevel.module2py
+            │
+            ├── subpkg1
+            │   ├── subpkg1.module1.py
+            │   ├── subpkg1.__init__.py
+            │   └── subpkg1.module2.py
+            │
+            ├── data_dir1 - e.g. c_files
+            │   ├── data_dir1_file1
+            │   ├── data_dir1_file2
+            │   └── data_dir1_file3
+            │
+            └── data_dir2 - e.g. doc
+                ├── data_dir2_file1 - e.g. LICENSE
+                └── data_dir2_file2 - e.g. README.rst
 
 If your layout is different, you may need to make changes to the
 following:
