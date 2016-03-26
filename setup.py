@@ -12,7 +12,7 @@ PACKAGE DATA
 '''
 # You _SHOULD_ set these
 name = 'setupext'
-version = '0.24.5'   # oldver: '0.24.4'
+version = '0.24.6'   # oldver: '0.24.5'
 description = name
 install_requires = [
 ]
@@ -23,10 +23,6 @@ license = (
 )
 
 # The following are optional
-try:
-    long_description = open('README.rst').read()
-except:
-    long_description = description
 url = 'https://github.com/sundarnagarajan/setupext'
 download_url = 'https://github.com/sundarnagarajan/setupext.git'
 author = 'Sundar Nagarajan'
@@ -79,6 +75,19 @@ ADDL_KWARGS = dict(
 '''
 
 
+def get_longdesc(default=''):
+    '''
+    Returns-->str
+    '''
+    files = ['README.rst', 'README.md', 'README.txt', 'README']
+    for f in files:
+        try:
+            return open(f, 'r').read()
+        except:
+            continue
+    return default
+
+
 def get_dirtree(topdir, dirlist=[]):
     '''
     topdir-->str: must be name of a dir under current working dir
@@ -114,6 +123,8 @@ dirlist = locals().get('data_dirs', None)
 if isinstance(dirlist, list):
     package_dir = {name: name}
     package_data = {name: get_dirtree(topdir=name, dirlist=dirlist)}
+
+long_description = get_longdesc(description)
 
 known_keywords = [
     'name', 'version', 'packages', 'description', 'license',
