@@ -38,14 +38,12 @@ To only use get\_dir\_tree(), just copy that function into your setup.py
 ASSUMPTIONS AND PACKAGE LAYOUT
 ==============================
 
-toplevel --> python package name
-
-This setup.py assumes following layout.
-
-This directory
+| This setup.py assumes following layout.
+| toplevel --> python package name
 
 ::
 
+    This directory
     ├── setup.py - this file
     ├── setupext.py - required in this directory
     ├── LICENSE - typical for github etc but not required

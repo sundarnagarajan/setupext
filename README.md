@@ -27,12 +27,10 @@ To only use get_dir_tree(), just copy that function into your setup.py
 
 
 # ASSUMPTIONS AND PACKAGE LAYOUT
+This setup.py assumes following layout.
 toplevel --> python package name
 
-This setup.py assumes following layout.
-
-This directory
-
+	This directory
 	├── setup.py - this file
 	├── setupext.py - required in this directory
 	├── LICENSE - typical for github etc but not required
