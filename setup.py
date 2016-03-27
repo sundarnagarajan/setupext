@@ -15,7 +15,7 @@ PACKAGE DATA
 '''
 # You _SHOULD_ set these
 name = 'setupext'
-version = '0.24.7'   # oldver: '0.24.6'
+version = '0.24.8'   # oldver: '0.24.7'
 description = 'Utility classes and methods for using setuptools'
 install_requires = [
 ]
