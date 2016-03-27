@@ -1,6 +1,9 @@
 import sys
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+# Import setupext ONLY if you want custom triggers
+# If you only use prep_cmd, you only need to include setupext in the package
+# import setupext
 
 
 os.chdir(os.path.dirname(sys.argv[0]) or ".")
@@ -13,7 +16,7 @@ PACKAGE DATA
 # You _SHOULD_ set these
 name = 'setupext'
 version = '0.24.7'   # oldver: '0.24.6'
-description = name
+description = 'Utility classes and methods for using setuptools'
 install_requires = [
 ]
 packages = find_packages()
@@ -64,7 +67,6 @@ ADDITIONAL keyword args to setup()
 ==============================================================================
 '''
 ADDL_KWARGS = dict(
-    include_package_data=True,
 )
 
 
@@ -73,6 +75,15 @@ ADDL_KWARGS = dict(
            DO NOT CHANGE ANYTHING BELOW THIS
 ==============================================================================
 '''
+
+
+def prepare_c_source(cmd):
+    '''
+    cmd-->str: command with arguments
+    '''
+    import setupext
+    setupext.config['build_ext']['pre']['cmdlist'] = [cmd]
+    return setupext.get_cmdclass()
 
 
 def get_longdesc(default=''):
@@ -129,7 +140,7 @@ long_description = get_longdesc(description)
 known_keywords = [
     'name', 'version', 'packages', 'description', 'license',
     'install_requires', 'requires', 'setup_requires',
-    'ext_modules', 'package_dir', 'package_data',
+    'package_dir', 'package_data',
     'zip_safe', 'classifiers', 'keywords',
     'long_description', 'url', 'download_url',
     'author', 'author_email', 'maintainer', 'maintainer_email',
@@ -140,8 +151,15 @@ for k in known_keywords:
     if k in locals():
         kwdict[k] = locals()[k]
 
+if 'prep_cmd' in locals():
+    kwdict['cmdclass'] = prepare_c_source(locals()['prep_cmd'])
+
+# Do not compile ext_modules during build phase - wasteful
+if len(sys.argv) > 1 and sys.argv[1] != 'build':
+    if 'ext_modules' in locals():
+        kwdict['ext_modules'] = [Extension(**x) for x in
+                                 locals()['ext_modules']]
+
 # Additional keywords specified by user - shouldn't be required, normally
 kwdict.update(ADDL_KWARGS)
-
-
 setup(**kwdict)
